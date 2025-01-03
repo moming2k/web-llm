@@ -37,3 +37,5 @@ navigation:
     link: /
   - title: GitHub
     link: https://github.com/mlc-ai/web-llm
+
+include: ["_includes"]

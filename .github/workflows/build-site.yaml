@@ -54,11 +54,19 @@ jobs:
         cd examples/text-completion && npm install && npm run build && cd ../..
         cd examples/vision-model && npm install && npm run build && cd ../..
 
+    - name: Copy _includes directory
+      run: |
+        cp -r site/_includes _includes
+
     - name: Build and deploy site
       if: github.ref == 'refs/heads/main'
       run: |
         git remote set-url origin https://x-access-token:${{ secrets.MLC_GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         git config --global user.email "mlc-gh-actions-bot@nomail"
         git config --global user.name "mlc-gh-actions-bot"
+
+        cd site
+        jekyll build
+        cd ..
 
         ./scripts/gh_deploy_site.sh
