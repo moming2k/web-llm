@@ -1,4 +1,5 @@
 import * as webllm from "@mlc-ai/web-llm";
+import { Worker } from 'worker_threads';
 
 function setLabel(id: string, text: string) {
   const label = document.getElementById(id);

@@ -18,12 +18,12 @@ dht.listen(20000, () => {
   console.log("DHT listening on port 20000");
 });
 
-dht.on("peer", (peer, infoHash, from) => {
+dht.on("peer", (peer: { host: string; port: number }, infoHash: string, from: any) => {
   console.log(`Found potential peer ${peer.host}:${peer.port} through DHT`);
   connectToPeer(peer.host, peer.port);
 });
 
-function connectToPeer(host: string, port: number) {
+function connectToPeer(host: string, port: number): void {
   const peerId = `${host}:${port}`;
   if (peers.has(peerId)) {
     return;
@@ -32,15 +32,15 @@ function connectToPeer(host: string, port: number) {
   const peerConnection = new RTCPeerConnection();
   peers.set(peerId, peerConnection);
 
-  peerConnection.onicecandidate = (event) => {
+  peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
     if (event.candidate) {
       dht.announce(peerId, event.candidate);
     }
   };
 
-  peerConnection.ondatachannel = (event) => {
+  peerConnection.ondatachannel = (event: RTCDataChannelEvent) => {
     const dataChannel = event.channel;
-    dataChannel.onmessage = (event) => {
+    dataChannel.onmessage = (event: MessageEvent) => {
       console.log(`Received message from ${peerId}: ${event.data}`);
       displayReceivedMessage(peerId, event.data);
     };
@@ -51,7 +51,7 @@ function connectToPeer(host: string, port: number) {
     console.log(`Data channel with ${peerId} is open`);
   };
 
-  peerConnection.createOffer().then((offer) => {
+  peerConnection.createOffer().then((offer: RTCSessionDescriptionInit) => {
     return peerConnection.setLocalDescription(offer);
   }).then(() => {
     dht.announce(peerId, peerConnection.localDescription);
@@ -65,7 +65,7 @@ function selectPiece(pieces: Array<{ index: number, rarity: number }>): number {
 }
 
 // Function to send message to other nodes using WebRTC
-function sendMessageToNode(peerId: string, message: string) {
+function sendMessageToNode(peerId: string, message: string): void {
   const peerConnection = peers.get(peerId);
   if (peerConnection) {
     const dataChannel = peerConnection.createDataChannel("data");
@@ -79,7 +79,7 @@ function sendMessageToNode(peerId: string, message: string) {
 }
 
 // Function to display received messages from other nodes
-function displayReceivedMessage(peerId: string, message: string) {
+function displayReceivedMessage(peerId: string, message: string): void {
   console.log(`Message from ${peerId}: ${message}`);
 }
 
@@ -91,15 +91,15 @@ const trackerClient = new Tracker({
   port: 6881
 });
 
-trackerClient.on('error', err => {
+trackerClient.on('error', (err: Error) => {
   console.error('Tracker error:', err);
 });
 
-trackerClient.on('update', data => {
+trackerClient.on('update', (data: any) => {
   console.log('Tracker update:', data);
 });
 
-trackerClient.on('peer', peer => {
+trackerClient.on('peer', (peer: { host: string; port: number }) => {
   console.log('Found peer:', peer);
   connectToPeer(peer.host, peer.port);
 });
