@@ -28,6 +28,32 @@ jobs:
         python -m pip install -r docs/requirements.txt
         gem install jekyll jekyll-remote-theme jekyll-sass-converter
 
+    - name: Build all example pages
+      run: |
+        cd examples/abort-reload && npm install && npm run build && cd ../..
+        cd examples/cache-usage && npm install && npm run build && cd ../..
+        cd examples/chrome-extension-webgpu-service-worker && npm install && npm run build && cd ../..
+        cd examples/chrome-extension && npm install && npm run build && cd ../..
+        cd examples/embeddings && npm install && npm run build && cd ../..
+        cd examples/function-calling/function-calling-manual && npm install && npm run build && cd ../../..
+        cd examples/function-calling/function-calling-openai && npm install && npm run build && cd ../../..
+        cd examples/get-started-web-worker && npm install && npm run build && cd ../..
+        cd examples/get-started && npm install && npm run build && cd ../..
+        cd examples/json-mode && npm install && npm run build && cd ../..
+        cd examples/json-schema && npm install && npm run build && cd ../..
+        cd examples/logit-processor && npm install && npm run build && cd ../..
+        cd examples/multi-models && npm install && npm run build && cd ../..
+        cd examples/multi-round-chat && npm install && npm run build && cd ../..
+        cd examples/next-simple-chat && npm install && npm run build && cd ../..
+        cd examples/seed-to-reproduce && npm install && npm run build && cd ../..
+        cd examples/service-worker && npm install && npm run build && cd ../..
+        cd examples/simple-chat-js && npm install && npm run build && cd ../..
+        cd examples/simple-chat-ts && npm install && npm run build && cd ../..
+        cd examples/simple-chat-upload && npm install && npm run build && cd ../..
+        cd examples/streaming && npm install && npm run build && cd ../..
+        cd examples/text-completion && npm install && npm run build && cd ../..
+        cd examples/vision-model && npm install && npm run build && cd ../..
+
     - name: Build and deploy site
       if: github.ref == 'refs/heads/main'
       run: |

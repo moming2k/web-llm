@@ -7,6 +7,10 @@ cd site && jekyll b && cd ..
 rm -rf site/_site/docs
 cp -r docs/_build/html site/_site/docs
 
+# Copy all example pages to site/_site/examples
+mkdir -p site/_site/examples
+cp -r examples/* site/_site/examples
+
 git fetch
 git checkout -B gh-pages origin/gh-pages
 rm -rf docs .gitignore
